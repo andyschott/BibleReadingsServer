@@ -6,7 +6,7 @@ var app = express();
 var dataFile = 'reader.json';
 
 function formatDate(d) {
-  return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + " 00:00:00 -0400";
+  return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " 00:00:00 -0400";
 }
 
 // Return who read last and the last reading date.

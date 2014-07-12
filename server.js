@@ -5,6 +5,10 @@ var app = express();
 
 var dataFile = 'reader.json';
 
+function formatDate(d) {
+  return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + " 00:00:00 -0400";
+}
+
 // Return who read last and the last reading date.
 app.get('/', function(req, res) {
   fs.readFile(dataFile, function(err, data) {
@@ -19,7 +23,7 @@ app.get('/', function(req, res) {
 app.post('/andy', function(req, res) {
   var reader = {
     "name" : "Andy",
-    "date" : new Date()
+    "date" : formatDate(new Date())
   };
   fs.writeFile(dataFile, JSON.stringify(reader), function(err) {
     res.send('OK');
@@ -29,7 +33,7 @@ app.post('/andy', function(req, res) {
 app.post('/melissa', function(req, res) {
   var reader = {
     "name" : "Melissa",
-    "date" : new Date()
+    "date" : formatDate(new Date())
   };
   fs.writeFile(dataFile, JSON.stringify(reader), function(err) {
     res.send('OK');

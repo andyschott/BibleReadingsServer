@@ -1,9 +1,27 @@
 var express = require('express');
+var fs = require('fs');
 
 var app = express();
 
+var dataFile = 'reader.json';
+
+// Return who read last and the last reading date.
 app.get('/', function(req, res) {
-  res.send('Hello World');
+  fs.readFile(dataFile, function(err, data) {
+    var reader = {} ;
+    if (!err) {
+      reader = JSON.parse(data);
+    }
+    res.send(reader);
+  });
 });
 
-app.listen(3000);
+app.post('/andy', function(req, res) {
+  res.send('OK');
+});
+
+app.post('/melissa', function(req, res) {
+  res.send('OK');
+});
+
+app.listen(process.argv[2] || 3000);

@@ -17,11 +17,23 @@ app.get('/', function(req, res) {
 });
 
 app.post('/andy', function(req, res) {
-  res.send('OK');
+  var reader = {
+    "name" : "Andy",
+    "date" : new Date()
+  };
+  fs.writeFile(dataFile, JSON.stringify(reader), function(err) {
+    res.send('OK');
+  });
 });
 
 app.post('/melissa', function(req, res) {
-  res.send('OK');
+  var reader = {
+    "name" : "Melissa",
+    "date" : new Date()
+  };
+  fs.writeFile(dataFile, JSON.stringify(reader), function(err) {
+    res.send('OK');
+  });
 });
 
 app.listen(process.argv[2] || 3000);

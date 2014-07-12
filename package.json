@@ -1,0 +1,9 @@
+{
+  "name" : "bible-readings-server",
+  "description" : "remember who read last",
+  "version" : "0.0.1",
+  "private" : true,
+  "dependencies" : {
+    "express" : "4.6.0"
+  }
+}

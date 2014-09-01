@@ -44,7 +44,12 @@ app.post('/melissa', function(req, res) {
 
 // Get the reading(s) for a given day
 app.get('/reading/:month/:day', function(req, res) {
-  res.send("Returning readings for month " + req.params.month + " and day " + req.params.day + ".");
+  var path = "data/" + req.params.month + ".json";
+  fs.readFile(path, function(err, data) {
+    var readings = JSON.parse(data.toString());
+    var readingsForDay = readings[req.params.day];
+    res.send(readingsForDay);
+  });
 });
 
 app.listen(process.argv[2] || 3000);

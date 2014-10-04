@@ -77,24 +77,85 @@ window.app = function() {
       req.send();
     },
 
-    createDateString: function(date) {
+    createDateString: function(date, includeYear) {
       var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
                       'Friday', 'Saturday'];
       var months = ['January', 'February', 'March', 'April',
                     'May', 'June', 'July', 'August',
                     'September', 'October', 'November', 'December'];
-      return weekdays[date.getDay()] + ', ' + months[date.getMonth()] + ' ' +
-        date.getDate() + ', ' + date.getFullYear();
+      var s = weekdays[date.getDay()] + ', ' + months[date.getMonth()] + ' ' +
+        date.getDate();
+      if(includeYear === undefined || includeYear) {
+        s += ', ' + date.getFullYear();
+      }
+
+      return s;
+    },
+
+    updateLastReader : function() {
+      var req = new XMLHttpRequest();
+      req.open('get', '/lastReader', true);
+      var welf = this;
+      req.onload = function() {
+         var lastReader = document.getElementById('lastReader');
+         var reader = JSON.parse(this.responseText);
+         lastReader.textContent = welf.buildReaderText(reader);
+      };
+      req.send();
+    },
+
+    buildReaderText : function(reader) {
+      var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+                      'Friday', 'Saturday'];
+
+      var name = '';
+      var time = '';
+      if(0 == reader.name.length) {
+        name = 'No one';
+        time = 'last time';
+      }
+      else {
+        var today = new Date();
+        today.setHours(0,0,0,0);
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday.setHours(0,0,0,0);
+        var lastWeek = new Date();
+        lastWeek.setDate(lastWeek.getDate() - 7);
+        lastWeek.setHours(0,0,0,0);
+
+        var readerDate = new Date(reader.date);
+
+        if(!reader.date) {
+          time = 'last time';
+        }
+        else if(+readerDate === +today) {
+          time = 'today';
+        }
+        else if(+readerDate === +yesterday) {
+          time = 'yesterday';
+        }
+        else if(+readerDate >= +lastWeek) {
+          time = weekdays[readerDate.getDay()];
+        }
+        else {
+          time = self.createDateString(readerDate, false);
+        }
+      }
+
+      return reader.name + ' read first ' + time;
     }
   };
 
   return {
     onLoad: function() {
       this.todaysReadings();
+      self.updateLastReader();
     },
 
     todaysReadings : function() {
       self.currentDate = new Date();
+      self.currentDate.setHours(0,0,0,0);
       self.getReadings(self.currentDate);
     },
 
@@ -106,6 +167,9 @@ window.app = function() {
     prevReadings : function() {
       self.currentDate.setDate(self.currentDate.getDate() - 1);
       self.getReadings(self.currentDate);
+    },
+
+    updateLastReader: function() {
     }
   };
 }();

@@ -12,7 +12,7 @@ function formatDate(d) {
 app.use(express.static(__dirname + '/public'));
 
 // Return who read last and the last reading date.
-app.get('/', function(req, res) {
+app.get('/lastReader', function(req, res) {
   fs.readFile(dataFile, function(err, data) {
     var reader = {} ;
     if (!err) {

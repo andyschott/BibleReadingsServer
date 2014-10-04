@@ -7,7 +7,27 @@ window.app = function() {
     },
 
     createReadingsLink: function(reading) {
-      return baseUrl + reading.book + "%20" + reading.start_chapter;
+      var url =  baseUrl + this.buildReadingTitle(reading);
+      return encodeURI(url);
+    },
+
+    buildReadingTitle : function(reading) {
+      if(reading.start_chapter === reading.end_chapter) {
+        if(reading.start_verse === reading.end_verse) {
+          return reading.book + " " + reading.start_chapter;
+        }
+        else {
+          return reading.book + " " + reading.start_chapter + ":" + reading.start_verse + " - " + reading.end_verse;
+        }
+      }
+      else {
+        if(reading.start_verse === reading.end_verse) {
+          return reading.book + " " + reading.start_chapter + " - " + reading.end_chapter;
+        }
+        else {
+          return reading.book + " " + reading.start_chapter + ":" + reading.start_verse + " - " + reading.end_chapter + ":" + reading.end_verse;
+        }
+      }
     }
   };
 
@@ -21,14 +41,14 @@ window.app = function() {
 
         var readingsList = document.getElementById('readings');
 
-        var li = document.createElement('li');
-        var a = document.createElement('a');
-        a.href = self.createReadingsLink(readings[0]);
-        a.textContent = readings[0].book + " " + readings[0].start_chapter;
-        li.appendChild(a);
-        readingsList.appendChild(li);
-
-        alert(this.responseText);
+        for(var i = 0; i < readings.length; i++) {
+          var li = document.createElement('li');
+          var a = document.createElement('a');
+          a.href = self.createReadingsLink(readings[i]);
+          a.textContent = self.buildReadingTitle(readings[i]);
+          li.appendChild(a);
+          readingsList.appendChild(li);
+        }
       };
       req.send();
     }

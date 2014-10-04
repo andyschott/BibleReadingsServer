@@ -170,6 +170,17 @@ window.app = function() {
     },
 
     updateLastReader: function() {
+      var readerCombo = document.getElementById('reader');
+      if(0 === readerCombo.selectedIndex) {
+        return;
+      }
+      var readerName = readerCombo.value;
+      var req = new XMLHttpRequest();
+      req.open('post', '/' + readerName.toLowerCase(), true);
+      req.onload = function() {
+        self.updateLastReader();
+      }
+      req.send();
     }
   };
 }();

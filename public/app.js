@@ -2,6 +2,8 @@ window.app = function() {
   var baseUrl = 'http://www.biblegateway.com/passage/?search=';
 
   var self = {
+    currentDate : new Date(),
+
     createReadingUrl: function(date) {
       return'/reading/' + (date.getMonth() + 1) + '/' + date.getDate();
     },
@@ -38,18 +40,20 @@ window.app = function() {
           return reading.book + " " + reading.start_chapter + ":" + reading.start_verse + " - " + reading.end_chapter + ":" + reading.end_verse;
         }
       }
-    }
-  };
+    },
 
-  return {
-    onLoad: function() {
-      var today = new Date();
+    getReadings : function(date) {
       var req = new XMLHttpRequest();
-      req.open('get', self.createReadingUrl(today), true);
+      req.open('get', self.createReadingUrl(date), true);
       req.onload = function() {
         var readings = JSON.parse(this.responseText);
 
         var readingsList = document.getElementById('readings');
+
+        // Remove any current readings
+        while(readingsList.lastChild) {
+          readingsList.removeChild(readingsList.lastChild);
+        }
 
         // Add all readings to the list
         for(var i = 0; i < readings.length; i++) {
@@ -67,6 +71,27 @@ window.app = function() {
         openAllReadings.href = url;
       };
       req.send();
+    }
+  };
+
+  return {
+    onLoad: function() {
+      this.todaysReadings();
+    },
+
+    todaysReadings : function() {
+      self.currentDate = new Date();
+      self.getReadings(self.currentDate);
+    },
+
+    nextReadings : function() {
+      self.currentDate.setDate(self.currentDate.getDate() + 1);
+      self.getReadings(self.currentDate);
+    },
+
+    prevReadings : function() {
+      self.currentDate.setDate(self.currentDate.getDate() - 1);
+      self.getReadings(self.currentDate);
     }
   };
 }();

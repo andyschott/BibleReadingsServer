@@ -124,7 +124,7 @@ window.app = function() {
         lastWeek.setDate(lastWeek.getDate() - 7);
         lastWeek.setHours(0,0,0,0);
 
-        var readerDate = new Date(reader.date);
+        var readerDate = new Date(reader.date.year, reader.date.month, reader.date.day, 0, 0, 0, 0);
 
         if(!reader.date) {
           time = 'last time';

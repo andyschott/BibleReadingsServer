@@ -6,7 +6,11 @@ var app = express();
 var dataFile = 'reader.json';
 
 function formatDate(d) {
-  return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " 00:00:00 -0400";
+  return {
+    year : d.getFullYear(),
+    month : d.getMonth(),
+    day : d.getDate()
+  };
 }
 
 app.use(express.static(__dirname + '/public'));

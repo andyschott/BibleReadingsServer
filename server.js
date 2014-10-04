@@ -9,6 +9,8 @@ function formatDate(d) {
   return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " 00:00:00 -0400";
 }
 
+app.use(express.static(__dirname + '/public'));
+
 // Return who read last and the last reading date.
 app.get('/', function(req, res) {
   fs.readFile(dataFile, function(err, data) {

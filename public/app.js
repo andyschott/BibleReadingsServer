@@ -69,8 +69,22 @@ window.app = function() {
         var url = self.createAllReadingsLink(readings);
         var openAllReadings = document.getElementById('openAllReadings');
         openAllReadings.href = url;
+
+        // Update the title
+        var title = document.getElementById('title');
+        title.textContent = 'Bible Readings for ' + self.createDateString(date);
       };
       req.send();
+    },
+
+    createDateString: function(date) {
+      var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+                      'Friday', 'Saturday'];
+      var months = ['January', 'February', 'March', 'April',
+                    'May', 'June', 'July', 'August',
+                    'September', 'October', 'November', 'December'];
+      return weekdays[date.getDay()] + ', ' + months[date.getMonth()] + ' ' +
+        date.getDate() + ', ' + date.getFullYear();
     }
   };
 

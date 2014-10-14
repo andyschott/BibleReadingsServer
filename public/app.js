@@ -143,7 +143,7 @@ window.app = function() {
         }
       }
 
-      return reader.name + ' read first ' + time;
+      return reader.name + ' read first ' + time + ".";
     }
   };
 

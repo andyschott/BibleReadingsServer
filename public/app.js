@@ -144,6 +144,33 @@ window.app = function() {
       }
 
       return reader.name + ' read first ' + time + ".";
+    },
+
+    loadEnglishTranslations: function() {
+      this.loadTranslations('english');
+    },
+
+    loadGermanTranslations: function() {
+      this.loadTranslations('german');
+    },
+
+    loadTranslations: function(language) {
+      var req = new XMLHttpRequest();
+      req.open('get', '/translations/' + language, true);
+      var welf = this;
+      req.onload = function() {
+        var english = document.getElementById(language);
+        var data = JSON.parse(this.responseText);
+        var translations = data['translations'];
+        for(var i = 0; i < translations.length; i++) {
+          var opt = document.createElement('option');
+          opt.value = translations[i]['shortName'];
+          opt.text = translations[i]['name'];
+
+          english.add(opt, null);
+        }
+      };
+      req.send();
     }
   };
 
@@ -151,6 +178,8 @@ window.app = function() {
     onLoad: function() {
       this.todaysReadings();
       self.updateLastReader();
+      self.loadEnglishTranslations();
+      self.loadGermanTranslations();
     },
 
     todaysReadings : function() {

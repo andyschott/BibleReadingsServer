@@ -5,3 +5,13 @@ body
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
 }
+
+div#englishContainer
+{
+  float: left;
+  margin-right: 1em;
+}
+
+div#germanContainer
+{
+}

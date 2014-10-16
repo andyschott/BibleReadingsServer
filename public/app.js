@@ -199,6 +199,8 @@ window.app = function() {
           localStorage.setItem(language, selectedTranslation.value);
         }
       }
+
+      this.getReadings(this.currentDate);
     },
 
     getSavedTranslation: function(language) {

@@ -1,0 +1,28 @@
+{
+  "translations": [
+    {
+      "name": "Use Default",
+      "shortName" : ""
+    },
+    {
+      "name": "Hoffnung für Alle",
+      "shortName" : "HOF"
+    },
+    {
+      "name": "Luther Bibel 1545",
+      "shortName" : "LUTH1545"
+    },
+    {
+      "name": "Neu Genfer Übersetzung",
+      "shortName" : "NGU-DE"
+    },
+    {
+      "name": "Schlachter 1951",
+      "shortName" : "SCH1951"
+    },
+    {
+      "name": "Schlachter 2000",
+      "shortName" : "SCH2000"
+    }
+  ]
+}

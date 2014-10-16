@@ -1,0 +1,40 @@
+{
+  "translations": [
+    {
+      "name": "Use Default",
+      "shortName" : ""
+    },
+    {
+      "name": "American Standard Version",
+      "shortName" : "ASV"
+    },
+    {
+      "name": "English Standard Version",
+      "shortName" : "ESV"
+    },
+    {
+      "name": "King James Version",
+      "shortName" : "KJV"
+    },
+    {
+      "name": "New American Standard Bible",
+      "shortName" : "NASB"
+    },
+    {
+      "name": "New International Version",
+      "shortName" : "NIV"
+    },
+    {
+      "name": "New King James Version",
+      "shortName" : "NKJV"
+    },
+    {
+      "name": "New Revised Standard Version",
+      "shortName" : "NRSV"
+    },
+    {
+      "name": "Revised Standard Version",
+      "shortName" : "RSV"
+    }
+  ]
+}

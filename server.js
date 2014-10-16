@@ -4,6 +4,8 @@ var fs = require('fs');
 var app = express();
 
 var dataFile = 'reader.json';
+var englishFile = 'english_translations.json';
+var germanFile = 'german_translations.json';
 
 function formatDate(d) {
   return {
@@ -11,6 +13,17 @@ function formatDate(d) {
     month : d.getMonth(),
     day : d.getDate()
   };
+}
+
+function readTranslations(translationsFilename, callback) {
+  var path = 'data/' + translationsFilename;
+  fs.readFile(path, function(err, data) {
+    var translations = {};
+    if(!err) {
+      translations = JSON.parse(data);
+    }
+    callback(translations);
+  });
 }
 
 app.use(express.static(__dirname + '/public'));
@@ -55,6 +68,20 @@ app.get('/reading/:month/:day', function(req, res) {
     var readings = JSON.parse(data.toString());
     var readingsForDay = readings[req.params.day];
     res.send(readingsForDay);
+  });
+});
+
+// Get the available English translations
+app.get('/translations/english', function(req, res) {
+  readTranslations(englishFile, function(translations) {
+    res.send(translations);
+  });
+});
+
+// Get the available German translations`
+app.get('/translations/german', function(req, res) {
+  readTranslations(germanFile, function(translations) {
+    res.send(translations);
   });
 });
 

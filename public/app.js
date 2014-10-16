@@ -10,6 +10,7 @@ window.app = function() {
 
     createReadingsLink: function(reading) {
       var url =  baseUrl + this.buildReadingTitle(reading);
+      url = this.appendTranslations(url);
       return encodeURI(url);
     },
 
@@ -20,6 +21,7 @@ window.app = function() {
       }
 
       var url = baseUrl + titles.join(';');
+      url = this.appendTranslations(url);
       return encodeURI(url);
     },
 
@@ -161,10 +163,7 @@ window.app = function() {
       req.onload = function() {
         var sel = document.getElementById(language);
 
-        var prevTranslation = '';
-        if(window.localStorage) {
-          prevTranslation = window.localStorage.getItem(language);
-        }
+        var prevTranslation =  welf.getSavedTranslation(language);
 
         var data = JSON.parse(this.responseText);
         var translations = data['translations'];
@@ -200,6 +199,29 @@ window.app = function() {
           localStorage.setItem(language, selectedTranslation.value);
         }
       }
+    },
+
+    getSavedTranslation: function(language) {
+      var translation = '';
+      if(window.localStorage) {
+        translation = window.localStorage.getItem(language);
+      }
+
+      return translation;
+    },
+
+    appendTranslations: function(url) {
+      var translation = this.getSavedTranslation('english');
+      if(translation && translation !== '') {
+        var german = this.getSavedTranslation('german');
+        if(german && german !== '') {
+          translation = translation + ';' + german;
+        }
+
+        url = url + '&version=' + translation;
+      }
+
+      return url;
     }
   };
 

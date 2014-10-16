@@ -159,7 +159,13 @@ window.app = function() {
       req.open('get', '/translations/' + language, true);
       var welf = this;
       req.onload = function() {
-        var english = document.getElementById(language);
+        var sel = document.getElementById(language);
+
+        var prevTranslation = '';
+        if(window.localStorage) {
+          prevTranslation = window.localStorage.getItem(language);
+        }
+
         var data = JSON.parse(this.responseText);
         var translations = data['translations'];
         for(var i = 0; i < translations.length; i++) {
@@ -167,10 +173,33 @@ window.app = function() {
           opt.value = translations[i]['shortName'];
           opt.text = translations[i]['name'];
 
-          english.add(opt, null);
+          if(opt.value === prevTranslation) {
+            opt.selected = true;
+          }
+
+          sel.add(opt, null);
         }
       };
       req.send();
+    },
+
+    saveEnglishTranslation: function() {
+      this.saveTranslation('english');
+    },
+
+    saveGermanTranslation: function() {
+      this.saveTranslation('german');
+    },
+
+    saveTranslation: function(language) {
+      var sel = document.getElementById(language);
+      var selectedTranslations = sel.selectedOptions;
+      if(selectedTranslations.length > 0) {
+        var selectedTranslation = selectedTranslations[0];
+        if(window.localStorage) {
+          localStorage.setItem(language, selectedTranslation.value);
+        }
+      }
     }
   };
 
@@ -210,6 +239,14 @@ window.app = function() {
         self.updateLastReader();
       }
       req.send();
+    },
+
+    onSelectEnglish: function() {
+      self.saveEnglishTranslation();
+    },
+
+    onSelectGerman: function() {
+    self.saveGermanTranslation();
     }
   };
 }();

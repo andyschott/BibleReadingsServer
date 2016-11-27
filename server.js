@@ -85,4 +85,4 @@ app.get('/translations/german', function(req, res) {
   });
 });
 
-app.listen(process.argv[2] || 3000);
+app.listen(process.env.port || 3000);

@@ -11,5 +11,8 @@
   },
   "scripts": {
     "start": "supervisor server.js"
+  },
+  "engines": {
+    "node" : "7.4.0"
   }
 }

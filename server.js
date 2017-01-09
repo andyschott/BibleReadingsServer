@@ -27,6 +27,16 @@ function readTranslations(translationsFilename, callback) {
   });
 }
 
+function setLastReader(readerName, res) {
+  var reader = {
+    'name' : readerName,
+    'date' : formatDate(new Date())
+  };
+  db.setLastReader(reader, (result) => {
+    res.send(result);
+  });
+}
+
 app.use(express.static(__dirname + '/public'));
 
 // Return who read last and the last reading date.
@@ -38,24 +48,12 @@ app.get('/lastReader', function(req, res) {
 
 // Set Andy as the last reader today
 app.post('/andy', function(req, res) {
-  var reader = {
-    "name" : "Andy",
-    "date" : formatDate(new Date())
-  };
-  db.setLastReader(reader, (result) => {
-    res.send(result);
-  });
+  setLastReader('Andy', res);
 });
 
 // Set Melissa as the reader today
 app.post('/melissa', function(req, res) {
-  var reader = {
-    "name" : "Melissa",
-    "date" : formatDate(new Date())
-  };
-  db.setLastReader(reader, (result) => {
-    res.send(result);
-  });
+  setLastReader('Melissa', res);
 });
 
 // Get the reading(s) for a given day

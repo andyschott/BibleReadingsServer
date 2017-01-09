@@ -17,6 +17,22 @@ function connect(callback) {
   });
 }
 
+function getTranslations(id, callback) {
+  connect((client, done) => {
+    const query = client.query('SELECT VALUE FROM TRANSLATIONS WHERE ID = $1', [id]);
+
+    const results = [];
+    query.on('row', (row) => {
+      results.push(row.value);
+    });
+
+    query.on('end', () => {
+      done();
+      callback(results[results.length - 1]);
+    });
+  });
+}
+
 const db = {
   'setLastReader' : function(reader, callback) {
     connect((client, done) => {
@@ -46,6 +62,14 @@ const db = {
         callback(results[results.length - 1]);
       });
     });
+  },
+
+  'getEnglishTranslations' : function(callback) {
+    getTranslations(1, callback);
+  },
+
+  'getGermanTranslations' : function(callback) {
+    getTranslations(2, callback);
   }
 };
 

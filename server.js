@@ -16,17 +16,6 @@ function formatDate(d) {
   };
 }
 
-function readTranslations(translationsFilename, callback) {
-  var path = 'data/' + translationsFilename;
-  fs.readFile(path, function(err, data) {
-    var translations = {};
-    if(!err) {
-      translations = JSON.parse(data);
-    }
-    callback(translations);
-  });
-}
-
 function setLastReader(readerName, res) {
   var reader = {
     'name' : readerName,
@@ -68,14 +57,14 @@ app.get('/reading/:month/:day', function(req, res) {
 
 // Get the available English translations
 app.get('/translations/english', function(req, res) {
-  readTranslations(englishFile, function(translations) {
+  db.getEnglishTranslations((translations) => {
     res.send(translations);
   });
 });
 
 // Get the available German translations`
 app.get('/translations/german', function(req, res) {
-  readTranslations(germanFile, function(translations) {
+  db.getGermanTranslations((translations) => {
     res.send(translations);
   });
 });

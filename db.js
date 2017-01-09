@@ -29,6 +29,23 @@ const db = {
         callback('OK');
       });
     });
+  },
+
+  'getLastReader' : function(callback) {
+    connect((client, done) => {
+      const query = client.query('SELECT VALUE FROM LAST_READER');
+
+      const results = [];
+      query.on('row', (row) => {
+        results.push(row.value);
+      });
+
+      query.on('end', () => {
+        done();
+
+        callback(results[results.length - 1]);
+      });
+    });
   }
 };
 

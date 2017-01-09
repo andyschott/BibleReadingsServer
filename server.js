@@ -31,11 +31,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Return who read last and the last reading date.
 app.get('/lastReader', function(req, res) {
-  fs.readFile(dataFile, function(err, data) {
-    var reader = {} ;
-    if (!err) {
-      reader = JSON.parse(data);
-    }
+  db.getLastReader((reader) => {
     res.send(reader);
   });
 });

@@ -1,5 +1,6 @@
 var express = require('express');
 var fs = require('fs');
+const db = require('./db');
 
 var app = express();
 
@@ -45,8 +46,8 @@ app.post('/andy', function(req, res) {
     "name" : "Andy",
     "date" : formatDate(new Date())
   };
-  fs.writeFile(dataFile, JSON.stringify(reader), function(err) {
-    res.send('OK');
+  db.setLastReader(reader, (result) => {
+    res.send(result);
   });
 });
 
@@ -56,8 +57,8 @@ app.post('/melissa', function(req, res) {
     "name" : "Melissa",
     "date" : formatDate(new Date())
   };
-  fs.writeFile(dataFile, JSON.stringify(reader), function(err) {
-    res.send('OK');
+  db.setLastReader(reader, (result) => {
+    res.send(result);
   });
 });
 
@@ -85,4 +86,4 @@ app.get('/translations/german', function(req, res) {
   });
 });
 
-app.listen(process.env.PORT || 4321);
+app.listen(process.env.PORT || 3000);

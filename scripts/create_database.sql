@@ -1,6 +1,0 @@
-CREATE TABLE IF NOT EXISTS LAST_READER (ID SERIAL PRIMARY KEY, VALUE JSON NOT NULL);
-
-DROP TABLE IF EXISTS TRANSLATIONS;
-CREATE TABLE TRANSLATIONS (ID SERIAL PRIMARY KEY, VALUE JSON NOT NULL);
-INSERT INTO TRANSLATIONS (VALUE)  VALUES ('{"translations":[{"name":"Use Default","shortName":""},{"name":"American Standard Version","shortName":"ASV"},{"name":"English Standard Version","shortName":"ESV"},{"name":"King James Version","shortName":"KJV"},{"name":"New American Standard Bible","shortName":"NASB"},{"name":"New International Version","shortName":"NIV"},{"name":"New King James Version","shortName":"NKJV"},{"name":"New Revised Standard Version","shortName":"NRSV"},{"name":"Revised Standard Version","shortName":"RSV"}]}');
-INSERT INTO TRANSLATIONS (VALUE) VALUES ('{"translations":[{"name":"Use Default","shortName":""},{"name":"Hoffnung für Alle","shortName":"HOF"},{"name":"Luther Bibel 1545","shortName":"LUTH1545"},{"name":"Neu Genfer Übersetzung","shortName":"NGU-DE"},{"name":"Schlachter 1951","shortName":"SCH1951"},{"name":"Schlachter 2000","shortName":"SCH2000"}]}');

@@ -70,6 +70,23 @@ const db = {
 
   'getGermanTranslations' : function(callback) {
     getTranslations(2, callback);
+  },
+
+  'getReadings' : function(month, day, callback) {
+    connect((client, done) => {
+      const query = client.query('SELECT VALUE FROM READINGS WHERE MONTH = $1 AND DAY = $2', [month, day]);
+
+      const results = [];
+      query.on('row', (row) => {
+        results.push(row.value);
+      });
+
+      query.on('end', () => {
+        done();
+
+        callback(results[results.length - 1]);
+      });
+    });
   }
 };
 

@@ -6,7 +6,17 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.set('views', './views');
+app.set('view engine', 'pug');
+
 app.use(express.static(__dirname + '/public'));
+
+app.get('/', (req, res) => {
+  res.render('index', {
+    'title' : 'Bible Readings',
+    'message' : 'Yep.'
+  });
+});
 
 // Return who read last and the last reading date.
 app.get('/lastReader', function(req, res) {

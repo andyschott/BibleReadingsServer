@@ -12,10 +12,7 @@ app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
-  res.render('index', {
-    'title' : 'Bible Readings',
-    'message' : 'Yep.'
-  });
+  res.render('index', { });
 });
 
 // Return who read last and the last reading date.

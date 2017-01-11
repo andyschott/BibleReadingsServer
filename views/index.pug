@@ -1,6 +1,48 @@
+doctype html
 html
   head
-    title= title
-  body
-    h1= title
-    p= message
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, user-scalable=no')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+
+    title Bible Readings
+
+    link(rel='stylesheet' href='styles.css')
+
+  body(onload='app.onLoad()')
+    h1#title Bible Readings
+    
+    ul#readings
+
+    p
+      a#openAllReadings(href='#') Open All Readings
+    
+    p#navigation
+      a#previousReading(href='javascript:app.prevReadings()') &lt;&lt; Previous
+      | &nbsp;|&nbsp;
+      a#todaysReading(href='javascript:app.todaysReadings()') Today
+      | &nbsp;|&nbsp;
+      a#nextReading(href='javascript:app.nextReadings()') Next &gt;&gt;
+    
+    p#lastReader
+
+    form(action='javascript:app.updateLastReader()')
+      select#reader
+        option Who read first today?
+        option Andy
+        option Melissa
+      | &nbsp;
+      input(type='submit' value='Update')
+    
+    p
+      div#englishContainer
+        span English:
+        br
+        select#english(onChange='javascript:app.onSelectEnglish();')
+      
+      div#germanContainer
+        span German:
+        br
+        select#german(onChange='javascript:app.onSelectGerman();')
+
+    script(src='app.js')

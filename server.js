@@ -1,30 +1,10 @@
-var express = require('express');
-var fs = require('fs');
+const express = require('express');
+const bodyParser = require('body-parser');
 const db = require('./db');
 
-var app = express();
+const app = express();
 
-var dataFile = 'reader.json';
-var englishFile = 'english_translations.json';
-var germanFile = 'german_translations.json';
-
-function formatDate(d) {
-  return {
-    year : d.getFullYear(),
-    month : d.getMonth(),
-    day : d.getDate()
-  };
-}
-
-function setLastReader(readerName, res) {
-  var reader = {
-    'name' : readerName,
-    'date' : formatDate(new Date())
-  };
-  db.setLastReader(reader, (result) => {
-    res.send(result);
-  });
-}
+app.use(bodyParser.json());
 
 app.use(express.static(__dirname + '/public'));
 
@@ -35,14 +15,12 @@ app.get('/lastReader', function(req, res) {
   });
 });
 
-// Set Andy as the last reader today
-app.post('/andy', function(req, res) {
-  setLastReader('Andy', res);
-});
-
-// Set Melissa as the reader today
-app.post('/melissa', function(req, res) {
-  setLastReader('Melissa', res);
+// Set who read last and when they read.
+app.post('/lastReader', function(req, res) {
+  const reader = req.body;
+  db.setLastReader(reader, (result) => {
+    res.send(result);
+  });
 });
 
 // Get the reading(s) for a given day

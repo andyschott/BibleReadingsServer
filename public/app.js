@@ -258,11 +258,21 @@ window.app = function() {
       }
       var readerName = readerCombo.value;
       var req = new XMLHttpRequest();
-      req.open('post', '/' + readerName.toLowerCase(), true);
+      req.open('post', '/lastReader', true);
       req.onload = function() {
         self.updateLastReader();
       }
-      req.send();
+      req.setRequestHeader('Content-Type', 'application/json');
+      const today = new Date();
+      const reader = {
+        'name' : readerName,
+        'date' : {
+          'year' : today.getFullYear(),
+          'month' : today.getMonth(),
+          'day' : today.getDate()
+        }
+      };
+      req.send(JSON.stringify(reader));
     },
 
     onSelectEnglish: function() {

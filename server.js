@@ -12,7 +12,14 @@ app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
-  res.render('index', { });
+  db.getEnglishTranslations((english) => {
+    db.getGermanTranslations((german) => {
+      res.render('index', {
+        english: english.translations,
+        german: german.translations
+      });
+    });
+  });
 });
 
 // Return who read last and the last reading date.

@@ -39,10 +39,14 @@ html
         span English:
         br
         select#english(onChange='javascript:app.onSelectEnglish();')
+          each translation in english
+            option(value=translation.shortName)= translation.name
       
       div#germanContainer
         span German:
         br
         select#german(onChange='javascript:app.onSelectGerman();')
+          each translation in german
+            option(value=translation.shortName)= translation.name
 
     script(src='app.js')

@@ -156,30 +156,17 @@ window.app = function() {
       this.loadTranslations('german');
     },
 
-    loadTranslations: function(language) {
-      var req = new XMLHttpRequest();
-      req.open('get', '/translations/' + language, true);
-      var welf = this;
-      req.onload = function() {
-        var sel = document.getElementById(language);
+    restoreSavedTranslation: function(language) {
+      var prevTranslation = self.getSavedTranslation(language);
 
-        var prevTranslation =  welf.getSavedTranslation(language);
-
-        var data = JSON.parse(this.responseText);
-        var translations = data['translations'];
-        for(var i = 0; i < translations.length; i++) {
-          var opt = document.createElement('option');
-          opt.value = translations[i]['shortName'];
-          opt.text = translations[i]['name'];
-
-          if(opt.value === prevTranslation) {
-            opt.selected = true;
-          }
-
-          sel.add(opt, null);
+      var translations = document.getElementById(language);
+      var options = translations.getElementsByTagName('option');
+      for(var i = 0; i < options.length; ++i) {
+        if(options[i].value === prevTranslation) {
+          options[i].selected = true;
+          break;
         }
-      };
-      req.send();
+      }
     },
 
     saveEnglishTranslation: function() {
@@ -231,8 +218,8 @@ window.app = function() {
     onLoad: function() {
       this.todaysReadings();
       self.updateLastReader();
-      self.loadEnglishTranslations();
-      self.loadGermanTranslations();
+      self.restoreSavedTranslation('english');
+      self.restoreSavedTranslation('german');
     },
 
     todaysReadings : function() {

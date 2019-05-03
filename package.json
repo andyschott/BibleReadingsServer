@@ -13,6 +13,6 @@
     "start": "supervisor server.js"
   },
   "engines": {
-    "node": "8.8.1"
+    "node": "12.1.0"
   }
 }

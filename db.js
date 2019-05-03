@@ -1,66 +1,39 @@
-const pg = require('pg');
+const { Pool, Client } = require('pg');
 
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/biblereadings';
 
-function connect(callback) {
-  pg.connect(connectionString, (err, client, done) => {
-    if(err) {
-      done();
-      console.log(err);
-      return {
-        'success' : false,
-        'data': err
-      };
-    }
-
-    callback(client, done);
+function connect() {
+  return new Pool({
+    connectionString: connectionString,
   });
 }
 
 function getTranslations(id, callback) {
-  connect((client, done) => {
-    const query = client.query('SELECT VALUE FROM TRANSLATIONS WHERE ID = $1', [id]);
+  const pool = connect();
 
-    const results = [];
-    query.on('row', (row) => {
-      results.push(row.value);
-    });
-
-    query.on('end', () => {
-      done();
-      callback(results[results.length - 1]);
-    });
+  pool.query('SELECT VALUE FROM TRANSLATIONS WHERE ID = $1', [id], (err, res) => {
+    pool.end();
+    callback(res.rows[res.rowCount - 1].value);
   });
 }
 
 const db = {
   'setLastReader' : function(reader, callback) {
-    connect((client, done) => {
-      client.query('DELETE FROM LAST_READER');
+    var pool = connect();
 
-      const query = client.query('INSERT INTO LAST_READER (VALUE) VALUES ($1)', [JSON.stringify(reader)]);
-
-      query.on('end', () => {
-        done();
+    pool.query('DELETE FROM LAST_READER', (err, res) => {
+      pool.query('INSERT INTO LAST_READER (VALUE) VALUES ($1)', [JSON.stringify(reader)], (err, res) => {
+        pool.end();
         callback('OK');
       });
     });
   },
 
   'getLastReader' : function(callback) {
-    connect((client, done) => {
-      const query = client.query('SELECT VALUE FROM LAST_READER');
-
-      const results = [];
-      query.on('row', (row) => {
-        results.push(row.value);
-      });
-
-      query.on('end', () => {
-        done();
-
-        callback(results[results.length - 1]);
-      });
+    var pool = connect();
+    pool.query('SELECT VALUE FROM LAST_READER', (err, res) => {
+      pool.end();
+      callback(res.rows[res.rowCount - 1].value);
     });
   },
 
@@ -73,19 +46,11 @@ const db = {
   },
 
   'getReadings' : function(month, day, callback) {
-    connect((client, done) => {
-      const query = client.query('SELECT VALUE FROM READINGS WHERE MONTH = $1 AND DAY = $2', [month, day]);
+    var pool = connect();
 
-      const results = [];
-      query.on('row', (row) => {
-        results.push(row.value);
-      });
-
-      query.on('end', () => {
-        done();
-
-        callback(results[results.length - 1]);
-      });
+    pool.query('SELECT VALUE FROM READINGS WHERE MONTH = $1 AND DAY = $2', [month, day], (err, res) => {
+      pool.end();
+      callback(res.rows[res.rowCount - 1].value);
     });
   }
 };
